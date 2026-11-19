@@ -1,0 +1,270 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#f6f7fb" />
+    <meta
+      name="description"
+      content="Plan your study day, keep track of assignments, and celebrate your progress."
+    />
+    <title>Daylight — Student Task Manager</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+    <script src="script.js" defer></script>
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar" aria-label="Main navigation">
+        <a class="brand" href="#" aria-label="Daylight home">
+          <span class="brand-mark" aria-hidden="true">
+            <svg viewBox="0 0 32 32" fill="none">
+              <path d="M16 5v4M16 23v4M5 16h4m14 0h4M8.2 8.2l2.8 2.8m10 10 2.8 2.8m0-15.6L21 11m-10 10-2.8 2.8" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" />
+              <circle cx="16" cy="16" r="5.3" fill="currentColor" />
+            </svg>
+          </span>
+          <span>daylight<span class="brand-period">.</span></span>
+        </a>
+
+        <div class="nav-label">WORKSPACE</div>
+        <nav class="nav-list">
+          <button class="nav-link is-active" type="button" data-filter="all">
+            <span class="nav-icon" aria-hidden="true">▦</span>
+            <span>My tasks</span>
+            <span class="nav-count" id="nav-task-count">0</span>
+          </button>
+          <button class="nav-link" type="button" data-filter="today">
+            <span class="nav-icon nav-icon-calendar" aria-hidden="true">▣</span>
+            <span>Today</span>
+          </button>
+          <button class="nav-link" type="button" data-filter="upcoming">
+            <span class="nav-icon" aria-hidden="true">◷</span>
+            <span>Upcoming</span>
+          </button>
+          <button class="nav-link" type="button" data-filter="completed">
+            <span class="nav-icon" aria-hidden="true">✓</span>
+            <span>Completed</span>
+          </button>
+        </nav>
+
+        <div class="sidebar-bottom">
+          <div class="focus-card">
+            <div class="focus-spark" aria-hidden="true">✦</div>
+            <p class="focus-title">Small steps add up.</p>
+            <p class="focus-copy">Keep showing up for your goals. You’re doing great!</p>
+            <div class="focus-progress">
+              <span id="focus-progress-label">0 of 0 tasks done</span>
+              <span class="focus-progress-track"><span id="focus-progress-fill"></span></span>
+            </div>
+          </div>
+          <div class="profile">
+            <div class="avatar" aria-hidden="true">S</div>
+            <div class="profile-copy">
+              <span class="profile-name">My study space</span>
+              <span class="profile-caption">One day at a time</span>
+            </div>
+            <span class="profile-more" aria-hidden="true">•••</span>
+          </div>
+        </div>
+      </aside>
+
+      <main class="main-content">
+        <header class="topbar">
+          <div class="breadcrumb"><span>Workspace</span><span class="breadcrumb-slash">/</span><strong id="breadcrumb-current">My tasks</strong></div>
+          <div class="topbar-date">
+            <span class="date-dot" aria-hidden="true"></span>
+            <span id="topbar-date"></span>
+          </div>
+        </header>
+
+        <section class="page-content">
+          <div class="welcome-row">
+            <div>
+              <p class="eyebrow"><span class="wave" aria-hidden="true">✦</span> YOUR PERSONAL STUDY PLANNER</p>
+              <h1 id="page-title">Make today <span class="title-accent">count.</span></h1>
+              <p class="page-subtitle">A little progress each day adds up to big results.</p>
+            </div>
+            <button class="primary-button" id="open-task-form" type="button">
+              <span class="plus-icon" aria-hidden="true">+</span>
+              Add a task
+            </button>
+          </div>
+
+          <section class="stats-grid" aria-label="Task overview">
+            <article class="stat-card">
+              <div class="stat-top"><span class="stat-label">Total tasks</span><span class="stat-icon stat-icon-lavender" aria-hidden="true">▦</span></div>
+              <div class="stat-value" id="total-tasks">0</div>
+              <div class="stat-note">Tasks on your list</div>
+            </article>
+            <article class="stat-card">
+              <div class="stat-top"><span class="stat-label">Completed</span><span class="stat-icon stat-icon-green" aria-hidden="true">✓</span></div>
+              <div class="stat-value" id="completed-tasks">0</div>
+              <div class="stat-note"><span class="note-highlight" id="completion-rate">0%</span> of all your tasks</div>
+            </article>
+            <article class="stat-card">
+              <div class="stat-top"><span class="stat-label">Due today</span><span class="stat-icon stat-icon-peach" aria-hidden="true">◷</span></div>
+              <div class="stat-value" id="due-today">0</div>
+              <div class="stat-note">You’ve got this!</div>
+            </article>
+            <article class="stat-card stat-card-progress">
+              <div class="stat-top"><span class="stat-label">Daily progress</span><span class="stat-icon stat-icon-blue" aria-hidden="true">↗</span></div>
+              <div class="progress-stat-row"><span class="stat-value" id="daily-progress">0%</span><span class="progress-caption">keep it up</span></div>
+              <div class="progress-track"><span id="daily-progress-fill"></span></div>
+            </article>
+          </section>
+
+          <section class="attendance-section" id="attendance" aria-labelledby="attendance-title">
+            <div class="attendance-heading">
+              <div>
+                <p class="eyebrow"><span class="wave" aria-hidden="true">✦</span> YOUR CONSISTENCY, CELEBRATED</p>
+                <h2 id="attendance-title">Daily attendance</h2>
+                <p class="attendance-subtitle">Show up for yourself. Every day counts.</p>
+              </div>
+              <span class="attendance-private"><span aria-hidden="true">●</span> Personal tracker</span>
+            </div>
+
+            <div class="attendance-layout">
+              <article class="checkin-card">
+                <div class="checkin-topline">
+                  <span class="checkin-icon" aria-hidden="true">✦</span>
+                  <span class="checkin-date" id="checkin-date"></span>
+                </div>
+                <p class="checkin-label">TODAY’S CHECK-IN</p>
+                <h3 id="attendance-status-heading">Ready when you are?</h3>
+                <p class="checkin-copy" id="attendance-status-copy">Tap below to record that you showed up today.</p>
+                <button class="checkin-button" id="attendance-checkin-button" type="button">
+                  <span aria-hidden="true">✓</span> Mark present
+                </button>
+                <div class="checkin-stats">
+                  <div><strong id="attendance-streak">0</strong><span>day streak <span aria-hidden="true">🔥</span></span></div>
+                  <span class="checkin-divider" aria-hidden="true"></span>
+                  <div><strong id="attendance-rate">0%</strong><span>this month</span></div>
+                </div>
+              </article>
+
+              <article class="attendance-calendar-card">
+                <div class="calendar-header">
+                  <div>
+                    <p class="calendar-eyebrow">YOUR JOURNEY</p>
+                    <h3 id="calendar-month-label"></h3>
+                  </div>
+                  <div class="calendar-controls">
+                    <button class="calendar-nav" id="calendar-previous" type="button" aria-label="Previous month">‹</button>
+                    <button class="calendar-nav" id="calendar-next" type="button" aria-label="Next month">›</button>
+                  </div>
+                </div>
+                <div class="calendar-grid calendar-weekdays" aria-hidden="true">
+                  <span>Su</span><span>Mo</span><span>Tu</span><span>We</span><span>Th</span><span>Fr</span><span>Sa</span>
+                </div>
+                <div class="calendar-grid calendar-days" id="attendance-calendar" role="group" aria-label="Monthly attendance"></div>
+                <div class="calendar-legend">
+                  <span><i class="legend-dot legend-present"></i> Checked in</span>
+                  <span><i class="legend-dot legend-today"></i> Today</span>
+                  <span class="calendar-summary" id="calendar-summary"></span>
+                </div>
+              </article>
+            </div>
+            <p class="attendance-footnote">Your check-ins are saved on this device. Unmarked days aren’t counted as present.</p>
+          </section>
+
+          <section class="task-panel" aria-label="Your tasks">
+            <div class="task-panel-header">
+              <div>
+                <div class="section-title-row">
+                  <h2 id="list-title">Your tasks</h2>
+                  <span class="task-total-badge" id="visible-task-count">0</span>
+                </div>
+                <p class="section-caption" id="list-caption">Everything you need to get done.</p>
+              </div>
+              <label class="search-box">
+                <span class="search-icon" aria-hidden="true">⌕</span>
+                <span class="sr-only">Search tasks</span>
+                <input type="search" id="task-search" placeholder="Search tasks..." />
+                <kbd>/</kbd>
+              </label>
+            </div>
+
+            <div class="filter-row" role="group" aria-label="Filter tasks by subject">
+              <button class="filter-chip is-selected" type="button" data-subject="all">All subjects</button>
+              <button class="filter-chip" type="button" data-subject="C Programming">C Programming</button>
+              <button class="filter-chip" type="button" data-subject="Python">Python</button>
+              <button class="filter-chip" type="button" data-subject="Java">Java</button>
+              <button class="filter-chip" type="button" data-subject="Cloud Computing">Cloud Computing</button>
+              <button class="filter-chip" type="button" data-subject="Computer Networks">Computer Networks</button>
+              <button class="filter-chip" type="button" data-subject="Data Structures & Algorithms">Data Structures &amp; Algorithms</button>
+              <button class="filter-chip" type="button" data-subject="Math">Math</button>
+              <button class="filter-chip" type="button" data-subject="Science">Science</button>
+              <button class="filter-chip" type="button" data-subject="Reading">Reading</button>
+              <button class="filter-chip" type="button" data-subject="Other">Other</button>
+            </div>
+
+            <div class="task-list" id="task-list" aria-live="polite"></div>
+            <div class="empty-state" id="empty-state" hidden>
+              <div class="empty-illustration" aria-hidden="true"><span>✦</span><span>✓</span></div>
+              <h3 id="empty-title">Your day is a blank page.</h3>
+              <p id="empty-copy">Add your first task and start making progress.</p>
+              <button class="text-button" id="empty-add-task" type="button">Create a task <span aria-hidden="true">→</span></button>
+            </div>
+          </section>
+          <footer class="page-footer"><span>Made for your next big thing</span><span aria-hidden="true">✦</span></footer>
+        </section>
+      </main>
+    </div>
+
+    <dialog class="task-dialog" id="task-dialog" aria-labelledby="dialog-title">
+      <form class="task-form" id="task-form">
+        <div class="dialog-heading">
+          <div>
+            <p class="eyebrow">YOUR NEXT STEP</p>
+            <h2 id="dialog-title">Add a task</h2>
+          </div>
+          <button class="icon-button dialog-close" id="close-task-form" type="button" aria-label="Close dialog">×</button>
+        </div>
+        <label class="form-field">
+          <span>Task name</span>
+          <input type="text" id="task-title" name="title" maxlength="120" placeholder="e.g. Review chapter 4 notes" required />
+        </label>
+        <label class="form-field">
+          <span>Subject</span>
+          <select id="task-subject" name="subject">
+            <option value="C Programming">C Programming</option>
+            <option value="Python">Python</option>
+            <option value="Java">Java</option>
+            <option value="Cloud Computing">Cloud Computing</option>
+            <option value="Computer Networks">Computer Networks</option>
+            <option value="Data Structures & Algorithms">Data Structures &amp; Algorithms</option>
+            <option value="Math">Math</option>
+            <option value="Science">Science</option>
+            <option value="Reading">Reading</option>
+            <option value="Other" selected>Other</option>
+          </select>
+        </label>
+        <div class="form-row">
+          <label class="form-field">
+            <span>Due date</span>
+            <input type="date" id="task-due-date" name="dueDate" />
+          </label>
+          <label class="form-field">
+            <span>Priority</span>
+            <select id="task-priority" name="priority">
+              <option value="low">Low</option>
+              <option value="medium" selected>Medium</option>
+              <option value="high">High</option>
+            </select>
+          </label>
+        </div>
+        <div class="dialog-actions">
+          <button class="secondary-button" id="cancel-task-form" type="button">Cancel</button>
+          <button class="primary-button" type="submit"><span class="plus-icon" aria-hidden="true">+</span><span id="submit-label">Add task</span></button>
+        </div>
+      </form>
+    </dialog>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  </body>
+</html>
